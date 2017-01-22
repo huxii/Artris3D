@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artris3D", "Artris3D.csproj", "{8A24224D-F8D3-1178-34F5-C3CBA747F033}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artris3D.Editor", "Artris3D.Editor.csproj", "{BBC901E1-C4B6-0CD3-BED7-CF04F8FC069D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A24224D-F8D3-1178-34F5-C3CBA747F033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A24224D-F8D3-1178-34F5-C3CBA747F033}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A24224D-F8D3-1178-34F5-C3CBA747F033}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A24224D-F8D3-1178-34F5-C3CBA747F033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBC901E1-C4B6-0CD3-BED7-CF04F8FC069D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBC901E1-C4B6-0CD3-BED7-CF04F8FC069D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBC901E1-C4B6-0CD3-BED7-CF04F8FC069D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBC901E1-C4B6-0CD3-BED7-CF04F8FC069D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
