@@ -73,4 +73,9 @@ public class Artris : MonoBehaviour
     {
         currentArtromino.localPosition += new Vector3(-1.0f, 0, 0);
     }
+
+	public void Transform()
+	{
+		currentArtromino.Rotate(0, 0, 90);
+	}
 }
