@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Artris : MonoBehaviour 
 {
-
-    public Transform currentArtromino;
     public Vector3 spawnLocation;
+    Transform currentArtromino;
 
 	// Use this for initialization
 	void Start () 
     {
-        spawnLocation = new Vector3(0, 0, 5);
+        spawnLocation = new Vector3(0.1f, 4.1f, -0.1f);
         currentArtromino = SpawnRandomArtromino();
         currentArtromino.parent = transform;
 	}
@@ -51,22 +50,27 @@ public class Artris : MonoBehaviour
                 break;
         }
 
-        return Instantiate(Resources.Load(spawnName), spawnLocation, new Quaternion(0, 0, 0, 0)) as Transform;
+        GameObject SpawnObject = (GameObject)Instantiate(Resources.Load(spawnName), spawnLocation, new Quaternion(0, 0, 0, 0));
+        return  SpawnObject.transform;
     }
 
     public void MoveForward() 
     {
+        currentArtromino.localPosition += new Vector3(0, 0, 1.0f);
     }
 
     public void MoveBack() 
     {
+        currentArtromino.localPosition += new Vector3(0, 0, -1.0f);
     }
 
     public void MoveLeft() 
     {
+        currentArtromino.localPosition += new Vector3(1.0f, 0, 0);
     }
 
     public void MoveRight()
     {
+        currentArtromino.localPosition += new Vector3(-1.0f, 0, 0);
     }
 }
