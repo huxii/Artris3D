@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Artris : MonoBehaviour 
 {
-    private Transform currentArtromino;
-    private int gridWidth = 10;
-    private int gridHeight = 20;
+    private Artromino currentArtromino;
 
 	// Use this for initialization
 	void Start () 
@@ -17,10 +15,6 @@ public class Artris : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        if (Landed())
-        {
-            SpawnRandomArtromino();
-        }
 	}
 
     public void SpawnRandomArtromino()
@@ -60,48 +54,40 @@ public class Artris : MonoBehaviour
                 break;
         }
                 
-        GameObject SpawnObject = (GameObject)Instantiate(Resources.Load(spawnName), spawnLocation, new Quaternion(0, 0, 0, 0));
-        currentArtromino = SpawnObject.transform;
-        currentArtromino.parent = transform;
+        GameObject spawnObject = (GameObject)Instantiate(Resources.Load(spawnName), spawnLocation, new Quaternion(0, 0, 0, 0));
+        spawnObject.transform.parent = transform;
+        currentArtromino = spawnObject.GetComponent<Artromino>();
+        currentArtromino.parentArtris = this;
     }
 
     public void MoveForward() 
     {
-        currentArtromino.localPosition += new Vector3(0, 0, 1.0f);
+        currentArtromino.Move(new Vector3(0, 0, 1.0f));
     }
 
     public void MoveBack() 
-    {
-        currentArtromino.localPosition += new Vector3(0, 0, -1.0f);
+    {        
+        currentArtromino.Move(new Vector3(0, 0, -1.0f));
     }
 
     public void MoveLeft() 
     {
-        currentArtromino.localPosition += new Vector3(1.0f, 0, 0);
+        currentArtromino.Move(new Vector3(1.0f, 0, 0));
     }
 
     public void MoveRight()
     {
-        currentArtromino.localPosition += new Vector3(-1.0f, 0, 0);
+        currentArtromino.Move(new Vector3(-1.0f, 0, 0));
     }
 
 	public void VerticalTransform()
 	{
-		currentArtromino.Rotate(0, 0, 90);
+        currentArtromino.Rotate(new Vector3(0, 0, 90));
 	}
 
     public void HorizontalTransform()
     {
-        currentArtromino.Rotate(0, 90, 0);
+        currentArtromino.Rotate(new Vector3(0, 90, 0));
     }
-        
-    bool Landed()
-    {
-        return false;
-    }
-
-    bool Collided()
-    {
-        return false;
-    }
+       
 }
