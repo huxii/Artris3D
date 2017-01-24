@@ -42,7 +42,7 @@ public class Artromino : MonoBehaviour {
         foreach (Transform mino in transform)
         {
             Vector3 pos = mino.transform.position;
-            if (pos.y <= 0.5)
+            if (pos.y <= 0.9)
             {
                 return true;
             }

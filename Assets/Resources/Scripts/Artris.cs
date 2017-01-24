@@ -21,36 +21,36 @@ public class Artris : MonoBehaviour
     {
         int rand = Random.Range(1, 8);
         string spawnName = "";
-        Vector3 spawnLocation = new Vector3(0.0f, 20.5f, -0.5f);
+        Vector3 spawnLocation = new Vector3(0.0f, 20f, 0.0f);
         switch (rand)
         {
             case 1:
                 spawnName = "Prefabs/I";
-                spawnLocation = new Vector3(0.0f, 20.5f, -0.5f);
+                spawnLocation = new Vector3(0.0f, 20.0f, 0.0f);
                 break;
             case 2:
                 spawnName = "Prefabs/J0";
-                spawnLocation = new Vector3(0.5f, 20.5f, -0.5f);
+                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
                 break;
             case 3:
                 spawnName = "Prefabs/J1";
-                spawnLocation = new Vector3(-0.5f, 20.5f, -0.5f);
+                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
                 break;
             case 4:
                 spawnName = "Prefabs/O";
-                spawnLocation = new Vector3(0.0f, 20.5f, -0.5f);
+                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
                 break;
             case 5:
                 spawnName = "Prefabs/T";
-                spawnLocation = new Vector3(0.5f, 20.5f, -0.5f);
+                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
                 break;
             case 6:
                 spawnName = "Prefabs/Z0";
-                spawnLocation = new Vector3(0.5f, 20.5f, -0.5f);
+                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
                 break;
             case 7:
                 spawnName = "Prefabs/Z1";
-                spawnLocation = new Vector3(-0.5f, 20.5f, -0.5f);
+                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
                 break;
         }
                 
