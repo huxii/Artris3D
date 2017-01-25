@@ -23,7 +23,6 @@ public class Artromino : MonoBehaviour {
             if (Landed())
             {
                 parentArtris.SpawnRandomArtromino();
-                landed = true;
             }
         }
 	}
@@ -41,14 +40,36 @@ public class Artromino : MonoBehaviour {
     {
         foreach (Transform mino in transform)
         {
-            Vector3 pos = mino.transform.position;
-            if (pos.y <= 0.9)
+            int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
+            if (indexY <= 1)
             {
-                return true;
+                landed = true; 
+                break;
+            }
+
+            int indexX = (int)Mathf.Round(mino.transform.position.x + 5.1f);
+            int indexZ = (int)Mathf.Round(mino.transform.position.z + 5.1f);
+            if (!parentArtris.nullGrid(indexX, indexY - 1, indexZ))
+            {
+                landed = true;
+                break;
             }
         }
 
-        return false;
+        if (landed)
+        {
+            foreach (Transform mino in transform)
+            {
+                parentArtris.updateGrid(
+                    (int)Mathf.Round(mino.transform.position.x + 5.1f),
+                    (int)Mathf.Round(mino.transform.position.y + 0.1f),
+                    (int)Mathf.Round(mino.transform.position.z + 5.1f),
+                    mino
+                );
+            }  
+        }
+
+        return landed;
     }
 
     bool Collided()
@@ -74,12 +95,12 @@ public class Artromino : MonoBehaviour {
         }
     }
 
-    public void Rotate(Vector3 angle)
+    public void Rotate(Vector3 dir)
     {
-        transform.Rotate(angle);
+        transform.RotateAround(transform.position, dir, 90);
         if (Collided())
         {
-            transform.Rotate(-angle);
+            transform.RotateAround(transform.position, dir, -90);
         }
     }
 }

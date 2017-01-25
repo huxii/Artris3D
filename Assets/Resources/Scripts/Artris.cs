@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Artris : MonoBehaviour 
 {
+    private static int gridWidth = 10;
+    private static int gridHeight = 20;
+    private static Transform [ , , ] grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];
+
     private Artromino currentArtromino;
+
 
 	// Use this for initialization
 	void Start () 
@@ -60,6 +65,34 @@ public class Artris : MonoBehaviour
         currentArtromino.parentArtris = this;
     }
 
+    public void updateGrid(int indexX, int indexY, int indexZ, Transform mino)
+    {
+        if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || indexY > gridHeight || 
+            indexZ <= 0 || indexZ > gridWidth)
+        {
+            return;
+        }
+        grid[indexX, indexY, indexZ] = mino;
+    }
+
+    public bool nullGrid(int indexX, int indexY, int indexZ)
+    {         
+        if (indexY > gridHeight)
+        {
+            return true;
+        }
+        if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || 
+        indexZ <= 0 || indexZ > gridWidth)
+        {
+            return false;
+        }
+
+        print(indexY);
+
+        return (grid[indexX, indexY, indexZ] == null);
+    }
+
+    // Game Pads control
     public void MoveForward() 
     {
         currentArtromino.Move(new Vector3(0, 0, 1.0f));
@@ -80,14 +113,17 @@ public class Artris : MonoBehaviour
         currentArtromino.Move(new Vector3(-1.0f, 0, 0));
     }
 
-	public void VerticalTransform()
+	public void TransformX()
 	{
-        currentArtromino.Rotate(new Vector3(0, 0, 90));
+        currentArtromino.Rotate(new Vector3(1, 0, 0));
 	}
 
-    public void HorizontalTransform()
+    public void TransformY()
     {
-        currentArtromino.Rotate(new Vector3(0, 90, 0));
+        currentArtromino.Rotate(new Vector3(0, 1, 0));
     }
-       
+    public void TransformZ()
+    {
+        currentArtromino.Rotate(new Vector3(0, 0, 1));
+    }      
 }
