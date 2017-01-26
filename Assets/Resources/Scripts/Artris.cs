@@ -7,9 +7,8 @@ public class Artris : MonoBehaviour
     private static int gridWidth = 10;
     private static int gridHeight = 20;
     private static Transform [ , , ] grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];
-
+  
     private Artromino currentArtromino;
-
 
 	// Use this for initialization
 	void Start () 
@@ -58,11 +57,10 @@ public class Artris : MonoBehaviour
                 spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
                 break;
         }
-                
+
         GameObject spawnObject = (GameObject)Instantiate(Resources.Load(spawnName), spawnLocation, new Quaternion(0, 0, 0, 0));
-        spawnObject.transform.parent = transform;
         currentArtromino = spawnObject.GetComponent<Artromino>();
-        currentArtromino.parentArtris = this;
+        currentArtromino.Init(spawnName, this);
     }
 
     public void updateGrid(int indexX, int indexY, int indexZ, Transform mino)
@@ -86,8 +84,6 @@ public class Artris : MonoBehaviour
         {
             return false;
         }
-
-        print(indexY);
 
         return (grid[indexX, indexY, indexZ] == null);
     }
@@ -122,8 +118,14 @@ public class Artris : MonoBehaviour
     {
         currentArtromino.Rotate(new Vector3(0, 1, 0));
     }
+
     public void TransformZ()
     {
         currentArtromino.Rotate(new Vector3(0, 0, 1));
-    }      
+    }    
+
+    public void Land()
+    {
+        currentArtromino.Landing();
+    }  
 }
