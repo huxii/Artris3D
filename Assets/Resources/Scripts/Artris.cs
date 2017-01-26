@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class Artris : MonoBehaviour 
 {
-    private static int gridWidth = 10;
-    private static int gridHeight = 20;
-    private static Transform [ , , ] grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];
+    public int gridWidth;
+    public int gridHeight;
+    public float cubeLen;
+    private float halfWidth;
+    private float halfHeight;
+    private float halfCube;
+    private static Transform[ , , ] grid;
   
     private Artromino currentArtromino;
 
 	// Use this for initialization
 	void Start () 
     {
+        gridWidth = 6;
+        gridHeight = 12;
+        cubeLen = 1.0f;
+        halfWidth = gridWidth / 2;
+        halfHeight = gridHeight / 2;
+        halfCube = cubeLen / 2;
+        grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];;
+
         SpawnRandomArtromino();
 	}
 	
@@ -25,36 +37,36 @@ public class Artris : MonoBehaviour
     {
         int rand = Random.Range(1, 8);
         string spawnName = "";
-        Vector3 spawnLocation = new Vector3(0.0f, 20f, 0.0f);
+        Vector3 spawnLocation = new Vector3(0.0f, gridHeight, 0.0f);
         switch (rand)
         {
             case 1:
                 spawnName = "Prefabs/I";
-                spawnLocation = new Vector3(0.0f, 20.0f, 0.0f);
+                spawnLocation = new Vector3(0.0f, gridHeight, 0.0f);
                 break;
             case 2:
                 spawnName = "Prefabs/J0";
-                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
                 break;
             case 3:
                 spawnName = "Prefabs/J1";
-                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
                 break;
             case 4:
                 spawnName = "Prefabs/O";
-                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
                 break;
             case 5:
                 spawnName = "Prefabs/T";
-                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
                 break;
             case 6:
                 spawnName = "Prefabs/Z0";
-                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
                 break;
             case 7:
                 spawnName = "Prefabs/Z1";
-                spawnLocation = new Vector3(0.0f, 21.0f, 0.0f);
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
                 break;
         }
 
@@ -67,9 +79,9 @@ public class Artris : MonoBehaviour
     {
         foreach (Transform mino in currentArtromino.transform)
         {
-            int indexX = (int)Mathf.Round(mino.transform.position.x + 5.1f);
+            int indexX = (int)Mathf.Round(mino.transform.position.x + halfWidth + 0.1f);
             int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
-            int indexZ = (int)Mathf.Round(mino.transform.position.z + 5.1f);
+            int indexZ = (int)Mathf.Round(mino.transform.position.z + halfWidth + 0.1f);
 
             if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || indexY > gridHeight || 
                 indexZ <= 0 || indexZ > gridWidth)
@@ -138,37 +150,37 @@ public class Artris : MonoBehaviour
     // Game Pads control
     public void MoveForward() 
     {
-        currentArtromino.Move(new Vector3(0, 0, 1.0f));
+        currentArtromino.Move(new Vector3(0, 0, cubeLen));
     }
 
     public void MoveBack() 
     {        
-        currentArtromino.Move(new Vector3(0, 0, -1.0f));
+        currentArtromino.Move(new Vector3(0, 0, -cubeLen));
     }
 
     public void MoveLeft() 
     {
-        currentArtromino.Move(new Vector3(1.0f, 0, 0));
+        currentArtromino.Move(new Vector3(cubeLen, 0, 0));
     }
 
     public void MoveRight()
     {
-        currentArtromino.Move(new Vector3(-1.0f, 0, 0));
+        currentArtromino.Move(new Vector3(-cubeLen, 0, 0));
     }
 
 	public void TransformX()
 	{
-        currentArtromino.Rotate(new Vector3(1, 0, 0));
+        currentArtromino.Rotate(new Vector3(1.0f, 0, 0));
 	}
 
     public void TransformY()
     {
-        currentArtromino.Rotate(new Vector3(0, 1, 0));
+        currentArtromino.Rotate(new Vector3(0, 1.0f, 0));
     }
 
     public void TransformZ()
     {
-        currentArtromino.Rotate(new Vector3(0, 0, 1));
+        currentArtromino.Rotate(new Vector3(0, 0, 1.0f));
     }    
 
     public void Land()

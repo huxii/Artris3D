@@ -7,6 +7,10 @@ public class Artromino : MonoBehaviour
     private Artris parentArtris;
     private ArtrominoShadow minoShadow;
 
+    private float halfWidth;
+    private float halfHeight;
+    private float halfCube;
+
     private float deltaTime = 1.0f;
     private float timeKey = 0.0f;
 	
@@ -25,37 +29,24 @@ public class Artromino : MonoBehaviour
         if (Time.time - timeKey >= deltaTime)
         {
             timeKey = Time.time;
-            transform.localPosition += new Vector3(0.0f, -1.0f, 0.0f);
+            Falling(transform);
         }        
     }
 
     bool Landing()
     {
-        foreach (Transform mino in transform)
-        {
-            int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
-            if (indexY <= 1)
-            {
-                return true;
-            }
-
-            int indexX = (int)Mathf.Round(mino.transform.position.x + 5.1f);
-            int indexZ = (int)Mathf.Round(mino.transform.position.z + 5.1f);
-            if (!nullGrid(indexX, indexY - 1, indexZ))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return Landing(transform);
     }
-
+        
     bool Collided()
     {
         foreach (Transform mino in transform)
         {
             Vector3 pos = mino.transform.position;
-            if (pos.x < -4.5 || pos.x > 4.5 || pos.z < -4.5 || pos.z > 4.5)
+            float limit = halfWidth - halfCube;
+            int indexX = (int)Mathf.Round(pos.x + halfWidth + 0.1f);
+            int indexZ = (int)Mathf.Round(pos.z + halfWidth + 0.1f);
+            if (indexX < 1 || indexX > 6 || indexZ < 1 || indexZ > 6)
             {
                 return true;
             }
@@ -70,6 +61,10 @@ public class Artromino : MonoBehaviour
         parentArtris = parent;
         transform.parent = parentArtris.transform;
 
+        halfWidth = parentArtris.gridWidth / 2;
+        halfHeight = parentArtris.gridHeight / 2;
+        halfCube = parentArtris.cubeLen / 2;
+
         string spawnShadowName = spawnName + "_Shadow";
         GameObject spawnShadowObject = (GameObject)Instantiate(Resources.Load(spawnShadowName), transform.position, new Quaternion(0, 0, 0, 0));
         minoShadow = spawnShadowObject.GetComponent<ArtrominoShadow>();
@@ -80,10 +75,10 @@ public class Artromino : MonoBehaviour
 
     public void Move(Vector3 dir)
     {
-        transform.localPosition += dir;
+        transform.position += dir;
         if (Collided())
         {
-            transform.localPosition -= dir;
+            transform.position -= dir;
         }
         else
         {
@@ -106,8 +101,8 @@ public class Artromino : MonoBehaviour
 
     public void Land()
     {   
-        transform.localPosition = minoShadow.transform.localPosition;
-        transform.localRotation = minoShadow.transform.localRotation;
+        transform.position = minoShadow.transform.position;
+        transform.rotation = minoShadow.transform.rotation;
 
         Destroy(minoShadow.gameObject);
 
@@ -122,5 +117,31 @@ public class Artromino : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void Falling(Transform target)
+    {
+        target.position += new Vector3(0.0f, -halfCube * 2, 0.0f);      
+    }
+
+    public bool Landing(Transform target)
+    {        
+        foreach (Transform mino in target)
+        {
+            int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
+            if (indexY <= 1)
+            {
+                return true;
+            }
+
+            int indexX = (int)Mathf.Round(mino.transform.position.x + halfWidth + 0.1f);
+            int indexZ = (int)Mathf.Round(mino.transform.position.z + halfWidth + 0.1f);
+            if (!nullGrid(indexX, indexY - 1, indexZ))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

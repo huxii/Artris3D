@@ -5,7 +5,7 @@ using UnityEngine;
 public class ArtrominoShadow : MonoBehaviour {
 
     private Artromino parentArtromino;
-	
+
 	// Update is called once per frame
 	void Update () 
     {
@@ -14,23 +14,7 @@ public class ArtrominoShadow : MonoBehaviour {
 
     bool Landed()
     {
-        foreach (Transform mino in transform)
-        {
-            int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
-            if (indexY <= 1)
-            {
-                return true; 
-            }
-
-            int indexX = (int)Mathf.Round(mino.transform.position.x + 5.1f);
-            int indexZ = (int)Mathf.Round(mino.transform.position.z + 5.1f);
-            if (!nullGrid(indexX, indexY - 1, indexZ))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return parentArtromino.Landing(transform);
     }
         
     // Use this for initialization
@@ -44,11 +28,11 @@ public class ArtrominoShadow : MonoBehaviour {
 
     public void updateShadow()
     {
-        transform.localPosition = parentArtromino.transform.localPosition;
-        transform.localRotation = parentArtromino.transform.localRotation;
+        transform.position = parentArtromino.transform.position;
+        transform.rotation = parentArtromino.transform.rotation;
         while (true)
         {
-            transform.localPosition += new Vector3(0.0f, -1.0f, 0.0f);
+            parentArtromino.Falling(transform);
             if (Landed())
             {
                 break;
