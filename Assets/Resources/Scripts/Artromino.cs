@@ -9,18 +9,14 @@ public class Artromino : MonoBehaviour
 
     private float deltaTime = 1.0f;
     private float timeKey = 0.0f;
-    private bool landed = false;
 	
 	// Update is called once per frame
 	void Update () 
     {
-        if (!landed)
+        Falling();
+        if (Landing())
         {
-            Falling();
-            if (Landed())
-            {
-                parentArtris.SpawnRandomArtromino();
-            }
+            Land();
         }
 	}
 
@@ -33,32 +29,25 @@ public class Artromino : MonoBehaviour
         }        
     }
 
-    bool Landed()
+    bool Landing()
     {
         foreach (Transform mino in transform)
         {
             int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
             if (indexY <= 1)
             {
-                landed = true;
-                break;
+                return true;
             }
 
             int indexX = (int)Mathf.Round(mino.transform.position.x + 5.1f);
             int indexZ = (int)Mathf.Round(mino.transform.position.z + 5.1f);
             if (!nullGrid(indexX, indexY - 1, indexZ))
             {
-                landed = true;
-                break;
+                return true;
             }
         }
 
-        if (landed)
-        {
-            Landing();
-        }
-
-        return landed;
+        return false;
     }
 
     bool Collided()
@@ -115,22 +104,14 @@ public class Artromino : MonoBehaviour
         }
     }
 
-    public void Landing()
+    public void Land()
     {   
         transform.localPosition = minoShadow.transform.localPosition;
         transform.localRotation = minoShadow.transform.localRotation;
 
         Destroy(minoShadow.gameObject);
 
-        foreach (Transform mino in transform)
-        {
-            parentArtris.updateGrid(
-                (int)Mathf.Round(mino.transform.position.x + 5.1f),
-                (int)Mathf.Round(mino.transform.position.y + 0.1f),
-                (int)Mathf.Round(mino.transform.position.z + 5.1f),
-                mino
-            );
-        }  
+        parentArtris.updateGrid();
     }
 
     public bool nullGrid(int indexX, int indexY, int indexZ)

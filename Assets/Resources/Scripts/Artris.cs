@@ -63,14 +63,61 @@ public class Artris : MonoBehaviour
         currentArtromino.Init(spawnName, this);
     }
 
-    public void updateGrid(int indexX, int indexY, int indexZ, Transform mino)
+    public void updateGrid()
     {
-        if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || indexY > gridHeight || 
-            indexZ <= 0 || indexZ > gridWidth)
+        foreach (Transform mino in currentArtromino.transform)
         {
-            return;
+            int indexX = (int)Mathf.Round(mino.transform.position.x + 5.1f);
+            int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
+            int indexZ = (int)Mathf.Round(mino.transform.position.z + 5.1f);
+
+            if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || indexY > gridHeight || 
+                indexZ <= 0 || indexZ > gridWidth)
+            {
+                continue;
+            }
+            grid[indexX, indexY, indexZ] = mino;
+        } 
+
+        Destroy(currentArtromino);
+
+        for (int y = gridHeight; y > 0; --y)
+        {
+            if (fullRow(y))
+            {
+                deleteRow(y);
+            }
         }
-        grid[indexX, indexY, indexZ] = mino;
+
+        SpawnRandomArtromino();
+    }
+
+    public bool fullRow(int y)
+    {
+        for (int x = 1; x <= gridWidth; ++x)
+        {
+            for (int z = 1; z <= gridWidth; ++z)
+            {
+                if (grid[x, y, z] == null)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public void deleteRow(int y)
+    {
+        for (int x = 1; x <= gridWidth; ++x)
+        {
+            for (int z = 1; z <= gridWidth; ++z)
+            {
+                Destroy(grid[x, y, z].gameObject);
+
+            }
+        }
     }
 
     public bool nullGrid(int indexX, int indexY, int indexZ)
@@ -126,6 +173,6 @@ public class Artris : MonoBehaviour
 
     public void Land()
     {
-        currentArtromino.Landing();
+        currentArtromino.Land();
     }  
 }
