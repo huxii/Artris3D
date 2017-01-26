@@ -7,6 +7,7 @@ public class Artris : MonoBehaviour
     public int gridWidth;
     public int gridHeight;
     public float cubeLen;
+
     private float halfWidth;
     private float halfHeight;
     private float halfCube;
@@ -26,12 +27,16 @@ public class Artris : MonoBehaviour
         grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];;
 
         SpawnRandomArtromino();
+        setEnabled(false);
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+    public void setEnabled(bool en)
     {
-	}
+        if (currentArtromino)
+        {
+            currentArtromino.enabled = en;
+        }
+    }
 
     public void SpawnRandomArtromino()
     {

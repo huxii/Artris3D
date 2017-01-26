@@ -14,6 +14,10 @@ public class Artromino : MonoBehaviour
     private float deltaTime = 1.0f;
     private float timeKey = 0.0f;
 	
+    void Start()
+    {
+    }
+
 	// Update is called once per frame
 	void Update () 
     {

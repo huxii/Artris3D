@@ -70,6 +70,7 @@ namespace Vuforia
         {
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
+            Artris artrisComponent = GetComponentInChildren<Artris>();
 
             // Enable rendering:
             foreach (Renderer component in rendererComponents)
@@ -83,6 +84,8 @@ namespace Vuforia
                 component.enabled = true;
             }
 
+            artrisComponent.setEnabled(true);
+
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
 
@@ -91,6 +94,7 @@ namespace Vuforia
         {
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
+            Artris artrisComponent = GetComponentInChildren<Artris>();
 
             // Disable rendering:
             foreach (Renderer component in rendererComponents)
@@ -103,6 +107,8 @@ namespace Vuforia
             {
                 component.enabled = false;
             }
+
+            artrisComponent.setEnabled(false);
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
         }
