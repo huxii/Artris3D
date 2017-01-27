@@ -6,12 +6,13 @@ public class Artromino : MonoBehaviour
 {
     private Artris parentArtris;
     private ArtrominoShadow minoShadow;
+    private GameObject indicatorObject;
 
     private float halfWidth;
     private float halfHeight;
     private float halfCube;
 
-    private float deltaTime = 1.0f;
+    private float deltaTime = 1.5f;
     private float timeKey = 0.0f;
 	
     void Start()
@@ -34,6 +35,7 @@ public class Artromino : MonoBehaviour
         {
             timeKey = Time.time;
             Falling(transform);
+            Falling(indicatorObject.transform);
         }        
     }
 
@@ -74,6 +76,11 @@ public class Artromino : MonoBehaviour
         minoShadow = spawnShadowObject.GetComponent<ArtrominoShadow>();
         minoShadow.Init(this);
 
+        string indicatorName = "Prefabs/Indicator";
+        indicatorObject = (GameObject)Instantiate(Resources.Load(indicatorName), transform.position, new Quaternion(0, 0, 0, 0));
+        indicatorObject.transform.parent = transform.parent;
+        indicatorObject.transform.position = transform.position;
+
         timeKey = Time.time;
     }
 
@@ -87,6 +94,7 @@ public class Artromino : MonoBehaviour
         else
         {
             minoShadow.updateShadow();
+            indicatorObject.transform.position += dir;
         }
     }
 
@@ -109,6 +117,7 @@ public class Artromino : MonoBehaviour
         transform.rotation = minoShadow.transform.rotation;
 
         Destroy(minoShadow.gameObject);
+        Destroy(indicatorObject);
 
         parentArtris.updateGrid();
     }

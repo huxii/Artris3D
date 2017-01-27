@@ -11,7 +11,7 @@ public class AutoScroll : MonoBehaviour {
 	public GameObject leftButton;
 	public GameObject rightButton;
 
-	float r = 60.0f;
+    float r = 100.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -28,36 +28,37 @@ public class AutoScroll : MonoBehaviour {
 
 		float deltaAngle = Angle (
 			new Vector3(anchor1.x, anchor1.y, 0), 
-			new Vector3(screenAxisX.x, screenAxisX.y, 0)
+            new Vector3(screenAxisX.x, screenAxisX.y, 0)
 			);
 
-        upButton.transform.localPosition = new Vector3(
-            -r * Mathf.Sin(Mathf.Deg2Rad * deltaAngle) - 100, 
-            r * Mathf.Cos(Mathf.Deg2Rad * deltaAngle) + 100, 
-            0.0f
-        );
         upButton.transform.localRotation = (Quaternion.Euler (new Vector3 (0, 0, deltaAngle)));
-
-        downButton.transform.localPosition = new Vector3(
-			r * Mathf.Sin(Mathf.Deg2Rad * deltaAngle) - 100, 
-			100 - r * Mathf.Cos(Mathf.Deg2Rad * deltaAngle),
-			0.0f
-		);
-        downButton.transform.localRotation = (Quaternion.Euler (new Vector3 (0, 0, 180 + deltaAngle)));
-
-        leftButton.transform.localPosition = new Vector3(
-            r * Mathf.Cos(Mathf.Deg2Rad * deltaAngle) - 100, 
-            r * Mathf.Sin(Mathf.Deg2Rad * deltaAngle) + 100, 
+        upButton.transform.localPosition = new Vector3(
+            r * Mathf.Cos(Mathf.Deg2Rad * (deltaAngle + 90)),
+            r * Mathf.Sin(Mathf.Deg2Rad * (deltaAngle + 90)),
             0.0f
         );
-        leftButton.transform.localRotation = (Quaternion.Euler (new Vector3 (0, 0, 270 + deltaAngle)));
 
+        rightButton.transform.localRotation = (Quaternion.Euler (new Vector3 (0, 0, deltaAngle + 90)));
         rightButton.transform.localPosition = new Vector3(
-            -r * Mathf.Cos(Mathf.Deg2Rad * deltaAngle) - 100, 
-            100 - r * Mathf.Sin(Mathf.Deg2Rad * deltaAngle), 
+            r * Mathf.Cos(Mathf.Deg2Rad * (deltaAngle + 180)),
+            r * Mathf.Sin(Mathf.Deg2Rad * (deltaAngle + 180)),
             0.0f
         );
-        rightButton.transform.localRotation = (Quaternion.Euler (new Vector3 (0, 0, 90 + deltaAngle)));
+
+        leftButton.transform.localRotation = (Quaternion.Euler (new Vector3 (0, 0, deltaAngle - 90)));
+        leftButton.transform.localPosition = new Vector3(
+            r * Mathf.Cos(Mathf.Deg2Rad * deltaAngle),
+            r * Mathf.Sin(Mathf.Deg2Rad * deltaAngle),
+            0.0f
+        );
+
+        downButton.transform.localRotation = (Quaternion.Euler (new Vector3 (0, 0, deltaAngle + 180)));
+        downButton.transform.localPosition = new Vector3(
+            r * Mathf.Cos(Mathf.Deg2Rad * (deltaAngle - 90)),
+            r * Mathf.Sin(Mathf.Deg2Rad * (deltaAngle - 90)),
+            0.0f
+        );
+            
 	}
 
 	float Angle(Vector3 from, Vector3 to)
