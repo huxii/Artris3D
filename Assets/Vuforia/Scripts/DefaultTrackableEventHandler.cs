@@ -84,7 +84,10 @@ namespace Vuforia
                 component.enabled = true;
             }
 
-            artrisComponent.setEnabled(true);
+            if (artrisComponent)
+            {
+                artrisComponent.SetEnabled(true);
+            }
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
@@ -108,7 +111,10 @@ namespace Vuforia
                 component.enabled = false;
             }
 
-            artrisComponent.setEnabled(false);
+            if (artrisComponent)
+            {
+                artrisComponent.SetEnabled(false);
+            }
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
         }

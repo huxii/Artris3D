@@ -6,19 +6,25 @@ public class AutoScroll : MonoBehaviour {
 
 	public Camera viewCam;
 
-	public GameObject upButton;
-	public GameObject downButton;
-	public GameObject leftButton;
-	public GameObject rightButton;
+	private GameObject upButton;
+    private GameObject downButton;
+    private GameObject leftButton;
+    private GameObject rightButton;
 
     float r = 100.0f;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
+        upButton = transform.Find("UpButton").gameObject;
+        downButton = transform.Find("DownButton").gameObject;
+        leftButton = transform.Find("LeftButton").gameObject;
+        rightButton = transform.Find("RightButton").gameObject;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
 
 		Vector3 anchor0 = new Vector3(0, 0, 0);
 		Vector3 screenAnchor0 = viewCam.WorldToScreenPoint(anchor0);

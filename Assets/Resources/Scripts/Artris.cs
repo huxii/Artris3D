@@ -27,10 +27,10 @@ public class Artris : MonoBehaviour
         grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];;
 
         SpawnRandomArtromino();
-        setEnabled(false);
+        SetEnabled(false);
 	}
 
-    public void setEnabled(bool en)
+    public void SetEnabled(bool en)
     {
         if (currentArtromino)
         {
