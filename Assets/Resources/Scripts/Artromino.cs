@@ -49,10 +49,10 @@ public class Artromino : MonoBehaviour
         foreach (Transform mino in transform)
         {
             Vector3 pos = mino.transform.position;
-            float limit = halfWidth - halfCube;
             int indexX = (int)Mathf.Round(pos.x + halfWidth + 0.1f);
+            int indexY = (int)Mathf.Round(pos.y + 0.1f);
             int indexZ = (int)Mathf.Round(pos.z + halfWidth + 0.1f);
-            if (indexX < 1 || indexX > 6 || indexZ < 1 || indexZ > 6)
+            if ( !NullGrid(indexX, indexY, indexZ) )
             {
                 return true;
             }
@@ -119,14 +119,14 @@ public class Artromino : MonoBehaviour
         Destroy(minoShadow.gameObject);
         Destroy(indicatorObject);
 
-        parentArtris.updateGrid();
+        parentArtris.UpdateGrid();
     }
 
-    public bool nullGrid(int indexX, int indexY, int indexZ)
+    public bool NullGrid(int indexX, int indexY, int indexZ)
     {         
         if (parentArtris)
         {
-            return parentArtris.nullGrid(indexX, indexY, indexZ);
+            return parentArtris.NullGrid(indexX, indexY, indexZ);
         }
 
         return true;
@@ -149,7 +149,7 @@ public class Artromino : MonoBehaviour
 
             int indexX = (int)Mathf.Round(mino.transform.position.x + halfWidth + 0.1f);
             int indexZ = (int)Mathf.Round(mino.transform.position.z + halfWidth + 0.1f);
-            if (!nullGrid(indexX, indexY - 1, indexZ))
+            if (!NullGrid(indexX, indexY - 1, indexZ))
             {
                 return true;
             }

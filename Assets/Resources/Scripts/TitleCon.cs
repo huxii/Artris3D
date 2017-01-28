@@ -17,7 +17,6 @@ public class TitleCon : MonoBehaviour {
 
     public void StartLevel() 
     {
-        print("");
         SceneManager.LoadScene("Artris3D");
     }
 }

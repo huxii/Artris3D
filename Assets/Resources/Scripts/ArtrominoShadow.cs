@@ -44,7 +44,7 @@ public class ArtrominoShadow : MonoBehaviour {
     {         
         if (parentArtromino)
         {
-            return parentArtromino.nullGrid(indexX, indexY, indexZ);
+            return parentArtromino.NullGrid(indexX, indexY, indexZ);
         }
 
         return true;

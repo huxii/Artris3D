@@ -30,6 +30,14 @@ public class Artris : MonoBehaviour
         SetEnabled(false);
 	}
 
+    public void Pause()
+    {
+        if (currentArtromino)
+        {
+            currentArtromino.enabled = !currentArtromino.enabled;
+        }
+    }
+
     public void SetEnabled(bool en)
     {
         if (currentArtromino)
@@ -80,7 +88,7 @@ public class Artris : MonoBehaviour
         currentArtromino.Init(spawnName, this);
     }
 
-    public void updateGrid()
+    public void UpdateGrid()
     {
         foreach (Transform mino in currentArtromino.transform)
         {
@@ -98,46 +106,20 @@ public class Artris : MonoBehaviour
 
         Destroy(currentArtromino);
 
-        for (int y = gridHeight; y > 0; --y)
+        for (int y = 0; y < gridHeight; ++y)
         {
-            if (fullRow(y))
+            if (FullRow(y))
             {
-                deleteRow(y);
+                DeleteRow(y);
+                DropRow(y + 1);
+                --y;
             }
         }
 
         SpawnRandomArtromino();
     }
 
-    public bool fullRow(int y)
-    {
-        for (int x = 1; x <= gridWidth; ++x)
-        {
-            for (int z = 1; z <= gridWidth; ++z)
-            {
-                if (grid[x, y, z] == null)
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    public void deleteRow(int y)
-    {
-        for (int x = 1; x <= gridWidth; ++x)
-        {
-            for (int z = 1; z <= gridWidth; ++z)
-            {
-                Destroy(grid[x, y, z].gameObject);
-
-            }
-        }
-    }
-
-    public bool nullGrid(int indexX, int indexY, int indexZ)
+    public bool NullGrid(int indexX, int indexY, int indexZ)
     {         
         if (indexY > gridHeight)
         {
@@ -192,4 +174,65 @@ public class Artris : MonoBehaviour
     {
         currentArtromino.Land();
     }  
+
+    private bool CheckRows(ref List<int> delRows)
+    {
+        delRows.Clear();
+        for (int y = 1; y <= gridHeight; ++y)
+        {
+            if (FullRow(y))
+            {
+                delRows.Add(y);
+            }
+        }
+            
+        return (delRows.Count > 0);
+    }
+
+    private bool FullRow(int y)
+    {
+        for (int x = 1; x <= gridWidth; ++x)
+        {
+            for (int z = 1; z <= gridWidth; ++z)
+            {
+                if (grid[x, y, z] == null)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private void DeleteRow(int y)
+    {
+        for (int x = 1; x <= gridWidth; ++x)
+        {
+            for (int z = 1; z <= gridWidth; ++z)
+            {
+                Destroy(grid[x, y, z].gameObject);
+                grid[x, y, z] = null;
+            }
+        }
+    }
+
+    private void DropRow(int y)
+    {
+        for (int Y = y; Y <= gridHeight; ++ Y)
+        {
+            for (int x = 1; x <= gridWidth; ++x)
+            {
+                for (int z = 1; z <= gridWidth; ++z)
+                {
+                    if (!NullGrid(x, Y, z))
+                    {
+                        grid[x, Y - 1, z] = grid[x, Y, z];
+                        grid[x, Y, z] = null;
+                        grid[x, Y - 1, z].position += new Vector3(0, -1.0f, 0);
+                    }
+                }
+            }
+        }
+    }
 }
