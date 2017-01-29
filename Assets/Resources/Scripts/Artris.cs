@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Artris : MonoBehaviour 
 {
@@ -12,6 +13,9 @@ public class Artris : MonoBehaviour
     private float halfHeight;
     private float halfCube;
     private static Transform[ , , ] grid;
+
+    public Text scoreText;
+    private int score;
   
     private Artromino currentArtromino;
 
@@ -24,9 +28,12 @@ public class Artris : MonoBehaviour
         halfWidth = gridWidth / 2;
         halfHeight = gridHeight / 2;
         halfCube = cubeLen / 2;
-        grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];;
+        grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];
+
+        score = 0;
 
         SpawnRandomArtromino();
+
         SetEnabled(false);
 	}
 
@@ -46,46 +53,9 @@ public class Artris : MonoBehaviour
         }
     }
 
-    public void SpawnRandomArtromino()
+    public void UpdateScore()
     {
-        int rand = Random.Range(1, 8);
-        string spawnName = "";
-        Vector3 spawnLocation = new Vector3(0.0f, gridHeight, 0.0f);
-        switch (rand)
-        {
-            case 1:
-                spawnName = "Prefabs/I";
-                spawnLocation = new Vector3(0.0f, gridHeight, 0.0f);
-                break;
-            case 2:
-                spawnName = "Prefabs/J0";
-                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
-                break;
-            case 3:
-                spawnName = "Prefabs/J1";
-                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
-                break;
-            case 4:
-                spawnName = "Prefabs/O";
-                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
-                break;
-            case 5:
-                spawnName = "Prefabs/T";
-                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
-                break;
-            case 6:
-                spawnName = "Prefabs/Z0";
-                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
-                break;
-            case 7:
-                spawnName = "Prefabs/Z1";
-                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
-                break;
-        }
-
-        GameObject spawnObject = (GameObject)Instantiate(Resources.Load(spawnName), spawnLocation, new Quaternion(0, 0, 0, 0));
-        currentArtromino = spawnObject.GetComponent<Artromino>();
-        currentArtromino.Init(spawnName, this);
+        scoreText.text = score.ToString();
     }
 
     public void UpdateGrid()
@@ -106,6 +76,7 @@ public class Artris : MonoBehaviour
 
         Destroy(currentArtromino);
 
+        int num = 0;
         for (int y = 0; y < gridHeight; ++y)
         {
             if (FullRow(y))
@@ -113,8 +84,16 @@ public class Artris : MonoBehaviour
                 DeleteRow(y);
                 DropRow(y + 1);
                 --y;
+
+                ++num;
             }
         }
+
+        if (num != 0)
+        {
+            score += (int)Mathf.Round(4 * Mathf.Pow(2, num));
+        }
+        UpdateScore();
 
         SpawnRandomArtromino();
     }
@@ -174,6 +153,48 @@ public class Artris : MonoBehaviour
     {
         currentArtromino.Land();
     }  
+
+    private void SpawnRandomArtromino()
+    {
+        int rand = Random.Range(1, 8);
+        string spawnName = "";
+        Vector3 spawnLocation = new Vector3(0.0f, gridHeight, 0.0f);
+        switch (rand)
+        {
+            case 1:
+                spawnName = "Prefabs/I";
+                spawnLocation = new Vector3(0.0f, gridHeight, 0.0f);
+                break;
+            case 2:
+                spawnName = "Prefabs/J0";
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
+                break;
+            case 3:
+                spawnName = "Prefabs/J1";
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
+                break;
+            case 4:
+                spawnName = "Prefabs/O";
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
+                break;
+            case 5:
+                spawnName = "Prefabs/T";
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
+                break;
+            case 6:
+                spawnName = "Prefabs/Z0";
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
+                break;
+            case 7:
+                spawnName = "Prefabs/Z1";
+                spawnLocation = new Vector3(0.0f, gridHeight + cubeLen, 0.0f);
+                break;
+        }
+
+        GameObject spawnObject = (GameObject)Instantiate(Resources.Load(spawnName), spawnLocation, new Quaternion(0, 0, 0, 0));
+        currentArtromino = spawnObject.GetComponent<Artromino>();
+        currentArtromino.Init(spawnName, this);
+    }
 
     private bool CheckRows(ref List<int> delRows)
     {
