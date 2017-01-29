@@ -22,11 +22,11 @@ public class Artromino : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        Falling();
         if (Landing())
         {
             Land();
         }
+        Falling();
 	}
 
     void Falling()

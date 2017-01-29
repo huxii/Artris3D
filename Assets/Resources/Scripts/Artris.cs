@@ -14,7 +14,10 @@ public class Artris : MonoBehaviour
     private float halfCube;
     private static Transform[ , , ] grid;
 
+    public GameObject HUD;
+    public GameObject EndScene;
     public Text scoreText;
+    public Text EndScoreText;
     private int score;
   
     private Artromino currentArtromino;
@@ -31,128 +34,22 @@ public class Artris : MonoBehaviour
         grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];
 
         score = 0;
+        HUD.SetActive(true);
+        EndScene.SetActive(false);
 
         SpawnRandomArtromino();
 
         SetEnabled(false);
 	}
+       
 
-    public void Pause()
+    private void GameOver()
     {
-        if (currentArtromino)
-        {
-            currentArtromino.enabled = !currentArtromino.enabled;
-        }
+        SetEnabled(false);
+
+        HUD.SetActive(false);
+        EndScene.SetActive(true);
     }
-
-    public void SetEnabled(bool en)
-    {
-        if (currentArtromino)
-        {
-            currentArtromino.enabled = en;
-        }
-    }
-
-    public void UpdateScore()
-    {
-        scoreText.text = score.ToString();
-    }
-
-    public void UpdateGrid()
-    {
-        foreach (Transform mino in currentArtromino.transform)
-        {
-            int indexX = (int)Mathf.Round(mino.transform.position.x + halfWidth + 0.1f);
-            int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
-            int indexZ = (int)Mathf.Round(mino.transform.position.z + halfWidth + 0.1f);
-
-            if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || indexY > gridHeight || 
-                indexZ <= 0 || indexZ > gridWidth)
-            {
-                continue;
-            }
-            grid[indexX, indexY, indexZ] = mino;
-        } 
-
-        Destroy(currentArtromino);
-
-        int num = 0;
-        for (int y = 0; y < gridHeight; ++y)
-        {
-            if (FullRow(y))
-            {
-                DeleteRow(y);
-                DropRow(y + 1);
-                --y;
-
-                ++num;
-            }
-        }
-
-        if (num != 0)
-        {
-            score += (int)Mathf.Round(4 * Mathf.Pow(2, num));
-        }
-        UpdateScore();
-
-        SpawnRandomArtromino();
-    }
-
-    public bool NullGrid(int indexX, int indexY, int indexZ)
-    {         
-        if (indexY > gridHeight)
-        {
-            return true;
-        }
-        if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || 
-        indexZ <= 0 || indexZ > gridWidth)
-        {
-            return false;
-        }
-
-        return (grid[indexX, indexY, indexZ] == null);
-    }
-
-    // Game Pads control
-    public void MoveForward() 
-    {
-        currentArtromino.Move(new Vector3(0, 0, cubeLen));
-    }
-
-    public void MoveBack() 
-    {        
-        currentArtromino.Move(new Vector3(0, 0, -cubeLen));
-    }
-
-    public void MoveLeft() 
-    {
-        currentArtromino.Move(new Vector3(cubeLen, 0, 0));
-    }
-
-    public void MoveRight()
-    {
-        currentArtromino.Move(new Vector3(-cubeLen, 0, 0));
-    }
-
-	public void TransformX()
-	{
-        currentArtromino.Rotate(new Vector3(1.0f, 0, 0));
-	}
-
-    public void TransformY()
-    {
-        currentArtromino.Rotate(new Vector3(0, 1.0f, 0));
-    }
-
-    public void TransformZ()
-    {
-        currentArtromino.Rotate(new Vector3(0, 0, 1.0f));
-    }    
-
-    public void Land()
-    {
-        currentArtromino.Land();
-    }  
 
     private void SpawnRandomArtromino()
     {
@@ -256,4 +153,158 @@ public class Artris : MonoBehaviour
             }
         }
     }
+
+    public void Pause()
+    {
+        enabled = !enabled;
+        if (currentArtromino)
+        {
+            currentArtromino.enabled = !currentArtromino.enabled;
+        }
+    }
+
+    public void SetEnabled(bool en)
+    {
+        enabled = en;
+        if (currentArtromino)
+        {
+            currentArtromino.enabled = en;
+        }
+    }
+
+    public void UpdateScore()
+    {
+        scoreText.text = score.ToString();
+        EndScoreText.text = score.ToString();
+    }
+
+    public void UpdateGrid()
+    {
+        bool over = false;
+
+        foreach (Transform mino in currentArtromino.transform)
+        {
+            int indexX = (int)Mathf.Round(mino.transform.position.x + halfWidth + 0.1f);
+            int indexY = (int)Mathf.Round(mino.transform.position.y + 0.1f);
+            int indexZ = (int)Mathf.Round(mino.transform.position.z + halfWidth + 0.1f);
+
+            if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || indexY > gridHeight || 
+                indexZ <= 0 || indexZ > gridWidth)
+            {
+                over = true;
+                break;
+            }
+            grid[indexX, indexY, indexZ] = mino;
+        } 
+
+        Destroy(currentArtromino);
+
+        if (!over)
+        {
+            int num = 0;
+            for (int y = 0; y < gridHeight; ++y)
+            {
+                if (FullRow(y))
+                {
+                    DeleteRow(y);
+                    DropRow(y + 1);
+                    --y;
+
+                    ++num;
+                }
+            }
+
+            if (num != 0)
+            {
+                score += (int)Mathf.Round(4 * Mathf.Pow(2, num));
+            }
+            UpdateScore();
+
+            SpawnRandomArtromino();
+        }
+        else
+        {
+            GameOver();
+        }
+    }
+
+    public bool NullGrid(int indexX, int indexY, int indexZ)
+    {         
+        if (indexY > gridHeight + 4)
+        {
+            return true;
+        }
+        if (indexX <= 0 || indexX > gridWidth || indexY <= 0 || 
+            indexZ <= 0 || indexZ > gridWidth)
+        {
+            return false;
+        }
+
+        return (grid[indexX, indexY, indexZ] == null);
+    }
+
+    // Game Pads control
+    public void MoveForward() 
+    {
+        if (enabled)
+        {
+            currentArtromino.Move(new Vector3(0, 0, cubeLen));
+        }
+    }
+
+    public void MoveBack() 
+    {      
+        if (enabled)
+        {
+            currentArtromino.Move(new Vector3(0, 0, -cubeLen));
+        }
+    }
+
+    public void MoveLeft() 
+    {
+        if (enabled)
+        {
+            currentArtromino.Move(new Vector3(cubeLen, 0, 0));
+        }
+    }
+
+    public void MoveRight()
+    {
+        if (enabled)
+        {
+            currentArtromino.Move(new Vector3(-cubeLen, 0, 0));
+        }
+    }
+
+    public void TransformX()
+    {        
+        if (enabled)
+        {
+            currentArtromino.Rotate(new Vector3(1.0f, 0, 0));
+        }
+    }
+
+    public void TransformY()
+    {
+        if (enabled)
+        {
+            currentArtromino.Rotate(new Vector3(0, 1.0f, 0));
+        }
+    }
+
+    public void TransformZ()
+    {
+        if (enabled)
+        {
+            currentArtromino.Rotate(new Vector3(0, 0, 1.0f));
+        }
+    }    
+
+    public void Land()
+    {
+        if (enabled)
+        {
+            currentArtromino.Land();
+        }
+    } 
 }
