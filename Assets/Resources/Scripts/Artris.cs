@@ -25,21 +25,21 @@ public class Artris : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        SetEnabled(false);
+
         gridWidth = 6;
         gridHeight = 12;
         cubeLen = 1.0f;
         halfWidth = gridWidth / 2;
         halfHeight = gridHeight / 2;
         halfCube = cubeLen / 2;
-        grid = new Transform[gridWidth + 2, gridHeight + 2, gridWidth + 2];
+        grid = new Transform[gridWidth + 2, gridHeight + 8, gridWidth + 2];
 
         score = 0;
         HUD.SetActive(true);
         EndScene.SetActive(false);
 
         SpawnRandomArtromino();
-
-        SetEnabled(false);
 	}
        
 
